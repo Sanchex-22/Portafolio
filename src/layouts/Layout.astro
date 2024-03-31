@@ -4,6 +4,9 @@ interface Props {
 }
 
 const { title } = Astro.props;
+import { Image } from 'astro:assets';
+import Menu from '../images/menu.svg';
+import MobileNav from '../components/mobile-nav.astro';
 ---
 
 <!doctype html>
@@ -16,10 +19,37 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body>
-		<nav class="bg-blue-500">
-			hola
+	<body id="body" class="relative">
+		<nav class="z-10 bg-white w-full flex justify-center p-4">
+			<div class="max-w-2xl w-full flex justify-between">
+				<div><a href="#">Home</a></div>
+				<div class="flex">
+					<a href="/contact" class="hidden md:block">Contact Me</a>
+					<Image src={Menu} alt="" class="md:hidden">
+				</div>
+			</div>
 		</nav>
+		<MobileNav></MobileNav>
 		<slot />
+		<footer>
+			<div class="max-w-2xl w-full grid grid-cols-12">
+				<div class="col-start-1 col-end-4 flex justify-center items-center">
+					<img src="#" alt="#">
+				</div>
+
+				<div class="col-start-5 col-end-8">
+					<li class="list-none"><a href="">Home</a></li>
+					<li class="list-none"><a href="">Pages</a></li>
+				</div>
+			</div>
+			<section id="copyright" class="flex justify-center items-center p-4">
+				<p>Carlos Sanchez - Copyright {new Date().getFullYear()}</p>
+			</section>
+		</footer>
 	</body>
 </html>
+
+<script is:inline>
+
+</script>
+

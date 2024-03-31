@@ -1,11 +1,34 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+import Main from '../components/Main.astro';
 ---
 
 <Layout title="Carlos Sanchez">
-	<main>
+	<div class="h-[90vh] grid grid-cols-8">
+		Banner
+	</div>
+	<Main>
+		<section class="py-5">
+			<h2>About Me</h2>
+			<div>
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam eveniet, voluptas, odit nihil nam assumenda voluptate ullam velit dolorem ex, odio facilis quam minus architecto aperiam asperiores eaque consequatur. Modi.</p>
+			</div>
+		</section>
 
-	</main>
+		<section class="py-5">
+			<h3>Proyects</h3>
+			<div>
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam eveniet, voluptas, odit nihil nam assumenda voluptate ullam velit dolorem ex, odio facilis quam minus architecto aperiam asperiores eaque consequatur. Modi.</p>
+			</div>
+		</section>
+
+		<section class="py-5">
+			<h4>Tecnologies</h4>
+			<div>
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam eveniet, voluptas, odit nihil nam assumenda voluptate ullam velit dolorem ex, odio facilis quam minus architecto aperiam asperiores eaque consequatur. Modi.</p>
+			</div>
+		</section>
+
+	</Main>
 </Layout>
 
