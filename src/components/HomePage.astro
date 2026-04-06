@@ -59,7 +59,7 @@ const pageTitle        = lang === 'es' ? 'Carlos Sanchez — Portafolio' : 'Carl
     </div>
 
     <!-- Imagen central -->
-    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 h-[86%] flex items-end">
+    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 h-[86%] flex items-end" data-hero-img>
       <img src={HERO_IMAGE} alt="Carlos Sanchez" class="h-full w-auto object-cover object-top max-w-[300px] md:max-w-[400px]" />
     </div>
 
@@ -92,7 +92,7 @@ const pageTitle        = lang === 'es' ? 'Carlos Sanchez — Portafolio' : 'Carl
         <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white text-sm font-black ml-1">+</div>
       </div>
       <p class="text-accent text-xl font-black mb-4">+</p>
-      <p class="text-[2.6rem] font-black leading-none">{STAT_COUNT}</p>
+      <p class="text-[2.6rem] font-black leading-none" data-counter={STAT_COUNT}>{STAT_COUNT}</p>
       <p class="text-[10px] tracking-[0.18em] opacity-40 mt-1">{t('hero.stat')}</p>
     </div>
   </section>
@@ -122,9 +122,9 @@ const pageTitle        = lang === 'es' ? 'Carlos Sanchez — Portafolio' : 'Carl
       <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 md:gap-8 items-start">
 
         <!-- Imagen grande izquierda -->
-        <div class="relative">
+        <div class="relative" data-about-col>
           <span class="absolute -top-4 left-[48%] text-accent text-4xl leading-none z-10 select-none" aria-hidden="true">✤</span>
-          <div class="relative overflow-hidden">
+          <div class="relative overflow-hidden" data-img-reveal>
             <a href={PROJECT_MAIN.link} class="block group">
               <img src={PROJECT_MAIN.image} alt={PROJECT_MAIN.caption} class="w-full object-cover aspect-[4/3] md:aspect-[5/4] group-hover:scale-[1.02] transition-transform duration-500" />
             </a>
@@ -144,13 +144,13 @@ const pageTitle        = lang === 'es' ? 'Carlos Sanchez — Portafolio' : 'Carl
         </div>
 
         <!-- Columna derecha -->
-        <div class="flex flex-col gap-5 md:w-[340px]">
-          <div class="flex flex-col items-end gap-2">
+        <div class="flex flex-col gap-5 md:w-[340px]" data-about-col>
+          <div class="flex flex-col items-end gap-2" data-img-reveal>
             <a href={PROJECT_TOP_RIGHT.link} class="block group overflow-hidden w-full">
               <img src={PROJECT_TOP_RIGHT.image} alt="Project 2" class="w-full object-cover aspect-[4/3] group-hover:scale-[1.02] transition-transform duration-500" />
             </a>
           </div>
-          <div>
+          <div data-img-reveal>
             <a href={PROJECT_BTM_RIGHT.link} class="block group overflow-hidden">
               <img src={PROJECT_BTM_RIGHT.image} alt="Project 3" class="w-full object-cover aspect-[4/3] group-hover:scale-[1.02] transition-transform duration-500" />
             </a>
@@ -167,7 +167,7 @@ const pageTitle        = lang === 'es' ? 'Carlos Sanchez — Portafolio' : 'Carl
             const sizes     = ['text-3xl','text-5xl md:text-6xl','text-4xl','text-3xl','text-2xl'];
             const opacities = ['opacity-30','opacity-100','opacity-50','opacity-30','opacity-20'];
             return (
-              <div class={`flex items-baseline gap-3 ${opacities[i]}`}>
+              <div class={`flex items-baseline gap-3 ${opacities[i]}`} data-skill>
                 <sup class="text-[10px] tracking-widest opacity-60 font-normal">[{String(i+1).padStart(2,'0')}]</sup>
                 <span class={`font-black leading-tight tracking-tight ${sizes[i]}`}>{cat.label} ({cat.count})</span>
               </div>
@@ -230,12 +230,12 @@ const pageTitle        = lang === 'es' ? 'Carlos Sanchez — Portafolio' : 'Carl
   </div>
 
   <!-- ══ ACCORDION DE PROYECTOS ══════════════════════ -->
-  <section class="px-5 pt-20 pb-20 bg-bg-light dark:bg-bg-dark">
+  <section class="px-5 pt-20 pb-20 bg-bg-light dark:bg-bg-dark" data-accordion-section>
     <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
 
       <div>
-        <p class="text-[14px] leading-relaxed opacity-55 max-w-[300px] mb-10">{t('accordion.desc')}</p>
-        <div class="relative" style="clip-path: polygon(0 0, 100% 0, 100% 88%, 88% 100%, 0 100%);">
+        <p class="text-[14px] leading-relaxed opacity-55 max-w-[300px] mb-10" data-accordion-desc>{t('accordion.desc')}</p>
+        <div class="relative" style="clip-path: polygon(0 0, 100% 0, 100% 88%, 88% 100%, 0 100%);" data-accordion-img>
           <img src={ACCORDION_IMAGE} alt="Featured project" class="w-full aspect-[4/5] object-cover" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
         </div>
@@ -294,6 +294,15 @@ const pageTitle        = lang === 'es' ? 'Carlos Sanchez — Portafolio' : 'Carl
   @keyframes ticker  { 0%{transform:translateX(0)} 100%{transform:translateX(-33.333%)} }
   @keyframes ticker2 { 0%{transform:translateX(0)} 100%{transform:translateX(-33.333%)} }
   #carousel::-webkit-scrollbar { display: none; }
+
+  /* Ocultar elementos antes de que GSAP los anime */
+  [data-hero-img],
+  [data-about-col],
+  [data-skill],
+  [data-accordion-desc],
+  [data-accordion-img] {
+    will-change: transform, opacity;
+  }
 </style>
 
 <script is:inline define:vars={{ totalProjects: 4 }}>
@@ -314,4 +323,233 @@ const pageTitle        = lang === 'es' ? 'Carlos Sanchez — Portafolio' : 'Carl
   document.getElementById('car-prev')?.addEventListener('click', () => scrollTo(carIdx-1));
   document.getElementById('car-next')?.addEventListener('click', () => scrollTo(carIdx+1));
   dots.forEach((d,i) => d.addEventListener('click', () => scrollTo(i)));
+</script>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // ════════════════════════════════════════════════════
+  // 1. LOAD — Navbar desliza desde arriba
+  // ════════════════════════════════════════════════════
+  gsap.from('nav', {
+    y: -80,
+    opacity: 0,
+    duration: 0.9,
+    ease: 'power3.out',
+  });
+
+  // ════════════════════════════════════════════════════
+  // 2. LOAD — Hero: texto línea por línea con clip-path
+  //    Cada span ".hero-text" sale desde abajo y se
+  //    descubre con una máscara (efecto "tipo-setter")
+  // ════════════════════════════════════════════════════
+  gsap.from('.hero-text', {
+    y: 110,
+    opacity: 0,
+    clipPath: 'inset(0 0 100% 0)',   // recorta desde abajo
+    duration: 1.1,
+    stagger: 0.13,                   // cada línea con 130ms de delay
+    ease: 'power4.out',
+    delay: 0.2,
+  });
+
+  // ════════════════════════════════════════════════════
+  // 3. LOAD — Hero: imagen sube desde abajo con escala
+  // ════════════════════════════════════════════════════
+  gsap.from('[data-hero-img]', {
+    y: 60,
+    scale: 1.08,
+    opacity: 0,
+    duration: 1.4,
+    ease: 'power3.out',
+    delay: 0.5,
+  });
+
+  // ════════════════════════════════════════════════════
+  // 4. LOAD — Tagline top-right + categoría bottom-left
+  // ════════════════════════════════════════════════════
+  gsap.from('[data-hero-img] ~ p, [data-hero-img] ~ a', {
+    opacity: 0,
+    x: -16,
+    duration: 0.8,
+    stagger: 0.12,
+    ease: 'power2.out',
+    delay: 0.9,
+  });
+
+  // ════════════════════════════════════════════════════
+  // 5. LOAD — Contador "50+" animado al llegar al hero
+  // ════════════════════════════════════════════════════
+  const counterEl = document.querySelector('[data-counter]') as HTMLElement | null;
+  if (counterEl) {
+    const target = parseInt(counterEl.dataset.counter ?? '50', 10);
+    const obj    = { val: 0 };
+    gsap.to(obj, {
+      val: target,
+      duration: 2,
+      delay: 1,
+      ease: 'power2.out',
+      onUpdate() {
+        counterEl.textContent = Math.round(obj.val) + '+';
+      },
+    });
+  }
+
+  // ════════════════════════════════════════════════════
+  // 6. SCROLL — About heading: entra desde la izquierda
+  // ════════════════════════════════════════════════════
+  gsap.from('#about h2', {
+    x: -80,
+    opacity: 0,
+    duration: 1,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: '#about',
+      start: 'top 78%',
+      toggleActions: 'play none none none',
+    },
+  });
+
+  // ════════════════════════════════════════════════════
+  // 7. SCROLL — Imágenes del about: clip-path reveal
+  //    Cada imagen se descubre de izquierda a derecha
+  //    como si una persiana se levantara
+  // ════════════════════════════════════════════════════
+  gsap.utils.toArray<HTMLElement>('[data-img-reveal]').forEach((el, i) => {
+    gsap.from(el, {
+      clipPath: 'inset(0 100% 0 0)',  // cortina desde la derecha
+      duration: 1.1,
+      ease: 'power3.inOut',
+      delay: i * 0.15,               // stagger manual por índice
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 82%',
+        toggleActions: 'play none none none',
+      },
+    });
+    // La imagen interior escala sutilmente al mismo tiempo
+    const img = el.querySelector('img');
+    if (img) {
+      gsap.from(img, {
+        scale: 1.15,
+        duration: 1.3,
+        ease: 'power3.out',
+        delay: i * 0.15,
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 82%',
+          toggleActions: 'play none none none',
+        },
+      });
+    }
+  });
+
+  // ════════════════════════════════════════════════════
+  // 8. SCROLL — Columnas del about: slide lateral opuesto
+  //    Izquierda entra desde la izq, derecha desde la der
+  // ════════════════════════════════════════════════════
+  gsap.utils.toArray<HTMLElement>('[data-about-col]').forEach((el, i) => {
+    gsap.from(el, {
+      x: i === 0 ? -50 : 50,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '#about',
+        start: 'top 70%',
+        toggleActions: 'play none none none',
+      },
+    });
+  });
+
+  // ════════════════════════════════════════════════════
+  // 9. SCROLL — Skills: stagger desde la derecha
+  //    Cada ítem de la lista aparece con 80ms de delay
+  // ════════════════════════════════════════════════════
+  gsap.from('[data-skill]', {
+    x: 70,
+    opacity: 0,
+    duration: 0.7,
+    stagger: 0.09,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: '[data-skill]',
+      start: 'top 85%',
+      toggleActions: 'play none none none',
+    },
+  });
+
+  // ════════════════════════════════════════════════════
+  // 10. SCROLL — Sección Projects: heading + cards
+  // ════════════════════════════════════════════════════
+  gsap.from('#projects h2', {
+    y: 40,
+    opacity: 0,
+    duration: 0.9,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: '#projects',
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    },
+  });
+
+  gsap.utils.toArray<HTMLElement>('#carousel > div').forEach((card, i) => {
+    gsap.from(card, {
+      y: 60,
+      opacity: 0,
+      duration: 0.7,
+      delay: i * 0.1,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '#carousel',
+        start: 'top 85%',
+        toggleActions: 'play none none none',
+      },
+    });
+  });
+
+  // ════════════════════════════════════════════════════
+  // 11. SCROLL — Accordion: imagen + texto con parallax
+  //     La imagen tiene un efecto "reveal" con escala
+  // ════════════════════════════════════════════════════
+  gsap.from('[data-accordion-desc]', {
+    x: -40,
+    opacity: 0,
+    duration: 0.9,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: '[data-accordion-section]',
+      start: 'top 78%',
+      toggleActions: 'play none none none',
+    },
+  });
+
+  gsap.from('[data-accordion-img]', {
+    scale: 0.92,
+    opacity: 0,
+    y: 40,
+    duration: 1.2,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: '[data-accordion-section]',
+      start: 'top 72%',
+      toggleActions: 'play none none none',
+    },
+  });
+
+  // Parallax suave de la imagen del accordion mientras scrolleas
+  gsap.to('[data-accordion-img]', {
+    y: -40,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '[data-accordion-section]',
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: 1.5,              // sigue el scroll suavemente
+    },
+  });
 </script>
