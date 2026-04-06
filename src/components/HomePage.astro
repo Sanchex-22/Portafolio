@@ -1,0 +1,317 @@
+---
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/ui';
+import Layout from '../layouts/Layout.astro';
+import Footer from './Footer.astro';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// ═══════════════════════════════════════════════════
+// VARIABLES CONFIGURABLES DE IMÁGENES
+// (el texto se toma de src/i18n/ui.ts)
+// ═══════════════════════════════════════════════════
+const HERO_IMAGE     = "https://placehold.co/480x700/d4d4c8/333333?text=Tu+Foto";
+const STAT_COUNT     = "50+";
+const TICKER_ITEMS   = ["React","TypeScript","Node.js","Astro","TailwindCSS","PostgreSQL","Docker","Git","Next.js","CSS"];
+const ACCORDION_IMAGE = "https://placehold.co/460x560/d4d0cb/333?text=Featured+Project";
+
+const PROJECT_MAIN      = { image:"https://placehold.co/580x480/e0ddd8/444?text=Proyecto+1", caption:"©Portfolio — main project 2026", link:"#" };
+const PROJECT_TOP_RIGHT = { image:"https://placehold.co/280x220/ccc9c4/444?text=Proyecto+2", link:"#" };
+const PROJECT_BTM_RIGHT = { image:"https://placehold.co/380x320/d4d0cb/444?text=Proyecto+3", caption:"©Portfolio — side project 2026", link:"#" };
+
+const CAROUSEL_PROJECTS = [
+  { image:"https://placehold.co/360x500/d4d0cb/333?text=Project+1", tag:"[Web App]"  },
+  { image:"https://placehold.co/360x500/c8c4be/333?text=Project+2", tag:"[Frontend]" },
+  { image:"https://placehold.co/360x500/e0ddd8/333?text=Project+3", tag:"[API]"      },
+  { image:"https://placehold.co/360x500/ccc8c2/333?text=Project+4", tag:"[Mobile]"   },
+];
+
+const cvPath = import.meta.env.PUBLIC_CV_PATH ?? '/cv-carlos-sanchez.pdf';
+
+// Desde traducciones
+const skillCategories  = t('about.skills')  as { label: string; count: number }[];
+const ticker2Items     = t('ticker2')        as string[];
+const accordionItems   = t('accordion.items') as { title:string; year:string; link:string; expanded:boolean; description:string; image:string }[];
+const pageTitle        = lang === 'es' ? 'Carlos Sanchez — Portafolio' : 'Carlos Sanchez — Portfolio';
+---
+
+<Layout title={pageTitle} lang={lang}>
+
+  <!-- ══ HERO ════════════════════════════════════════ -->
+  <section class="relative h-[100dvh] overflow-hidden bg-bg-light dark:bg-bg-dark">
+
+    <p class="absolute top-20 right-5 md:right-10 text-right text-[11px] tracking-[0.18em] opacity-40 z-10 leading-relaxed whitespace-pre-line">
+      {t('hero.tagline')}
+    </p>
+
+    <!-- Texto grande izquierda -->
+    <div class="absolute left-0 top-1/2 -translate-y-[55%] z-10 pl-4 md:pl-10 pointer-events-none select-none">
+      <span class="block hero-text font-black leading-[0.88] tracking-tight">{t('hero.line1')}</span>
+      <span class="block hero-text font-black leading-[0.88] tracking-tight">{t('hero.line2')}</span>
+    </div>
+
+    <!-- Texto grande derecha -->
+    <div class="absolute right-0 top-1/2 -translate-y-[45%] z-10 pr-4 md:pr-10 text-right pointer-events-none select-none">
+      <span class="block hero-text font-black leading-[0.88] tracking-tight">{t('hero.line3')}</span>
+      <span class="block hero-text font-black leading-[0.88] tracking-tight">{t('hero.line4')}</span>
+    </div>
+
+    <!-- Imagen central -->
+    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 h-[86%] flex items-end">
+      <img src={HERO_IMAGE} alt="Carlos Sanchez" class="h-full w-auto object-cover object-top max-w-[300px] md:max-w-[400px]" />
+    </div>
+
+    <!-- Info inferior izquierda -->
+    <p class="absolute left-4 md:left-10 bottom-[10.5rem] z-30 text-[11px] tracking-[0.22em] opacity-40">{t('hero.category')}</p>
+    <p class="absolute left-4 md:left-10 bottom-[5.5rem] z-30 max-w-[175px] text-[11px] leading-relaxed opacity-55">{t('hero.desc')}</p>
+
+    <!-- Botón CV en hero (mobile) -->
+    <a
+      href={cvPath}
+      download
+      class="absolute left-4 md:left-10 bottom-5 z-30 md:hidden flex items-center gap-2 border border-current/30 rounded-full px-3 py-[5px] text-[10px] font-semibold hover:border-accent hover:text-accent transition-colors"
+    >
+      <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="6" y1="1" x2="6" y2="9"/><polyline points="3 6 6 9 9 6"/><line x1="1" y1="11" x2="11" y2="11"/>
+      </svg>
+      {t('nav.cv')}
+    </a>
+
+    <!-- Año (desktop) -->
+    <p class="absolute left-4 md:left-10 bottom-5 z-30 hidden md:block text-[10px] opacity-35 leading-relaxed whitespace-pre-line">{t('hero.year')}</p>
+
+    <!-- Stats inferior derecha -->
+    <div class="absolute right-4 md:right-10 bottom-5 z-30 text-right">
+      <div class="flex justify-end items-center gap-1 mb-5">
+        <div class="flex -space-x-2">
+          <div class="w-8 h-8 rounded-full bg-zinc-300 dark:bg-zinc-600 border-2 border-bg-light dark:border-bg-dark"></div>
+          <div class="w-8 h-8 rounded-full bg-zinc-400 dark:bg-zinc-500 border-2 border-bg-light dark:border-bg-dark"></div>
+        </div>
+        <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-white text-sm font-black ml-1">+</div>
+      </div>
+      <p class="text-accent text-xl font-black mb-4">+</p>
+      <p class="text-[2.6rem] font-black leading-none">{STAT_COUNT}</p>
+      <p class="text-[10px] tracking-[0.18em] opacity-40 mt-1">{t('hero.stat')}</p>
+    </div>
+  </section>
+
+  <!-- ══ TICKER 1 — oscuro ═══════════════════════════ -->
+  <div class="bg-[#111] dark:bg-[#f0f0eb] py-[14px] overflow-hidden">
+    <div class="ticker-track flex gap-14 whitespace-nowrap w-max">
+      {[...TICKER_ITEMS,...TICKER_ITEMS,...TICKER_ITEMS].map(item => (
+        <span class="text-[#f0f0eb] dark:text-[#111] text-[12px] font-semibold tracking-[0.2em] uppercase flex items-center gap-3">
+          <span class="text-accent">◆</span>{item}
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <!-- ══ ABOUT ════════════════════════════════════════ -->
+  <section id="about" class="px-5 pt-16 pb-0 bg-bg-light dark:bg-bg-dark overflow-hidden">
+    <div class="max-w-6xl mx-auto">
+
+      <div class="mb-10 md:mb-14">
+        <h2 class="text-[clamp(2.8rem,8vw,6.5rem)] font-black leading-[0.88] tracking-tight">
+          {t('about.heading1')}&nbsp;{t('about.heading2')}<br/>
+          <span class="text-accent">{t('about.heading3')}</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 md:gap-8 items-start">
+
+        <!-- Imagen grande izquierda -->
+        <div class="relative">
+          <span class="absolute -top-4 left-[48%] text-accent text-4xl leading-none z-10 select-none" aria-hidden="true">✤</span>
+          <div class="relative overflow-hidden">
+            <a href={PROJECT_MAIN.link} class="block group">
+              <img src={PROJECT_MAIN.image} alt={PROJECT_MAIN.caption} class="w-full object-cover aspect-[4/3] md:aspect-[5/4] group-hover:scale-[1.02] transition-transform duration-500" />
+            </a>
+          </div>
+          <div class="flex items-center justify-between mt-4">
+            <div class="flex items-center gap-4">
+              <div class="flex gap-2">
+                <span class="w-2 h-2 rounded-full bg-accent"></span>
+                <span class="w-2 h-2 rounded-full bg-current opacity-20"></span>
+              </div>
+              <a href={PROJECT_MAIN.link} class="flex items-center gap-2 border border-current rounded-full px-4 py-[6px] text-[11px] tracking-widest uppercase font-semibold hover:bg-current hover:text-bg-light dark:hover:text-bg-dark transition-colors">
+                {t('about.viewProject')} <span class="text-accent">→</span>
+              </a>
+            </div>
+          </div>
+          <p class="mt-2 text-[11px] opacity-35 tracking-wide">{PROJECT_MAIN.caption}</p>
+        </div>
+
+        <!-- Columna derecha -->
+        <div class="flex flex-col gap-5 md:w-[340px]">
+          <div class="flex flex-col items-end gap-2">
+            <a href={PROJECT_TOP_RIGHT.link} class="block group overflow-hidden w-full">
+              <img src={PROJECT_TOP_RIGHT.image} alt="Project 2" class="w-full object-cover aspect-[4/3] group-hover:scale-[1.02] transition-transform duration-500" />
+            </a>
+          </div>
+          <div>
+            <a href={PROJECT_BTM_RIGHT.link} class="block group overflow-hidden">
+              <img src={PROJECT_BTM_RIGHT.image} alt="Project 3" class="w-full object-cover aspect-[4/3] group-hover:scale-[1.02] transition-transform duration-500" />
+            </a>
+            <p class="mt-2 text-[11px] opacity-35 tracking-wide">{PROJECT_BTM_RIGHT.caption}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Franja inferior -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 mt-16 md:mt-24 pb-20 items-end">
+        <p class="text-[15px] leading-relaxed opacity-60 max-w-[320px]">{t('about.text')}</p>
+        <div class="flex flex-col items-start md:items-end gap-[2px]">
+          {skillCategories.map((cat, i) => {
+            const sizes     = ['text-3xl','text-5xl md:text-6xl','text-4xl','text-3xl','text-2xl'];
+            const opacities = ['opacity-30','opacity-100','opacity-50','opacity-30','opacity-20'];
+            return (
+              <div class={`flex items-baseline gap-3 ${opacities[i]}`}>
+                <sup class="text-[10px] tracking-widest opacity-60 font-normal">[{String(i+1).padStart(2,'0')}]</sup>
+                <span class={`font-black leading-tight tracking-tight ${sizes[i]}`}>{cat.label} ({cat.count})</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CARRUSEL DE PROYECTOS ════════════════════════ -->
+  <section id="projects" class="pt-20 pb-0 px-5 bg-bg-light dark:bg-bg-dark overflow-hidden">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex items-end justify-between mb-8">
+        <div>
+          <h2 class="text-[clamp(1.6rem,4vw,3rem)] font-black leading-tight tracking-tight">
+            {t('carousel.heading1')}<br/>{t('carousel.heading2')}
+          </h2>
+          <span class="text-[12px] opacity-35 tracking-widest">2026</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-[11px] opacity-40 tracking-widest hidden md:block">{t('carousel.label')}</span>
+          <button id="car-prev" aria-label={t('carousel.prev')} class="w-9 h-9 rounded-full border border-current/20 flex items-center justify-center hover:border-current/60 transition-colors">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 2 4 6 8 10"/></svg>
+          </button>
+          <button id="car-next" aria-label={t('carousel.next')} class="w-9 h-9 rounded-full border border-current/20 flex items-center justify-center hover:border-current/60 transition-colors">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 2 8 6 4 10"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div id="carousel" class="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-6" style="scrollbar-width:none">
+        {CAROUSEL_PROJECTS.map(p => (
+          <div class="snap-start shrink-0 w-[75vw] md:w-[300px] group">
+            <div class="relative overflow-hidden">
+              <img src={p.image} alt={p.tag} class="w-full aspect-[3/4] object-cover group-hover:scale-[1.03] transition-transform duration-500" />
+              <span class="absolute top-3 left-3 text-[10px] tracking-widest bg-bg-light/90 dark:bg-bg-dark/90 px-2 py-1">{p.tag}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="flex gap-2 mt-2">
+        {CAROUSEL_PROJECTS.map((_, i) => (
+          <span class={`carousel-dot h-[3px] transition-all duration-300 ${i===0?'w-8 bg-current':'w-4 bg-current opacity-20'}`} data-index={i}></span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TICKER 2 — claro ═════════════════════════════ -->
+  <div class="bg-bg-light dark:bg-bg-dark border-y border-current/10 py-[13px] overflow-hidden mt-16">
+    <div class="ticker2-track flex gap-12 whitespace-nowrap w-max">
+      {[...ticker2Items,...ticker2Items,...ticker2Items].map(item => (
+        <span class="text-[12px] font-semibold tracking-[0.22em] uppercase flex items-center gap-3 opacity-70">
+          <span class="text-accent font-black">+</span>{item}
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <!-- ══ ACCORDION DE PROYECTOS ══════════════════════ -->
+  <section class="px-5 pt-20 pb-20 bg-bg-light dark:bg-bg-dark">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+
+      <div>
+        <p class="text-[14px] leading-relaxed opacity-55 max-w-[300px] mb-10">{t('accordion.desc')}</p>
+        <div class="relative" style="clip-path: polygon(0 0, 100% 0, 100% 88%, 88% 100%, 0 100%);">
+          <img src={ACCORDION_IMAGE} alt="Featured project" class="w-full aspect-[4/5] object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+        </div>
+      </div>
+
+      <div class="flex flex-col pt-2">
+        {accordionItems.map(item => (
+          <div class="border-t border-current/10 py-6">
+            <div class="flex items-center justify-between">
+              <h3 class={`font-black tracking-tight leading-tight ${item.expanded ? 'text-[clamp(1.4rem,3vw,2rem)]' : 'text-[clamp(1.1rem,2.2vw,1.5rem)] opacity-40'}`}>
+                {item.title}
+              </h3>
+              <a href={item.link} class="w-9 h-9 rounded-full border border-current/20 flex items-center justify-center hover:border-current/60 transition-colors shrink-0 ml-4" aria-label={item.title}>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 2 8 6 4 10"/></svg>
+              </a>
+            </div>
+            {item.expanded && item.description && (
+              <div class="mt-4 flex items-end justify-between gap-4">
+                <div>
+                  <p class="text-[13px] opacity-55 leading-relaxed max-w-[240px] mb-5">{item.description}</p>
+                  <a href={item.link} class="inline-flex items-center gap-2 border border-current rounded-full px-4 py-[6px] text-[11px] tracking-widest uppercase font-semibold hover:bg-current hover:text-bg-light dark:hover:text-bg-dark transition-colors">
+                    {t('accordion.getStarted')} <span class="text-accent">→</span>
+                  </a>
+                </div>
+                {item.image && <img src={item.image} alt={item.title} class="w-[130px] aspect-[4/3] object-cover shrink-0" />}
+              </div>
+            )}
+          </div>
+        ))}
+        <div class="border-t border-current/10"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials ocultos — quitar 'hidden' para activar -->
+  <div class="hidden">
+    <div class="bg-bg-light dark:bg-bg-dark border-y border-current/10 py-[13px] overflow-hidden">
+      <div class="ticker2b-track flex gap-12 whitespace-nowrap w-max">
+        {[...ticker2Items,...ticker2Items,...ticker2Items].map(item => (
+          <span class="text-[12px] font-semibold tracking-[0.22em] uppercase flex items-center gap-3 opacity-70">
+            <span class="text-accent font-black">+</span>{item}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <Footer lang={lang} />
+
+</Layout>
+
+<style>
+  .hero-text { font-size: clamp(3.2rem, 9.5vw, 9.5rem); }
+  .ticker-track  { animation: ticker  25s linear infinite; }
+  .ticker2-track { animation: ticker2 30s linear infinite; }
+  @keyframes ticker  { 0%{transform:translateX(0)} 100%{transform:translateX(-33.333%)} }
+  @keyframes ticker2 { 0%{transform:translateX(0)} 100%{transform:translateX(-33.333%)} }
+  #carousel::-webkit-scrollbar { display: none; }
+</style>
+
+<script is:inline define:vars={{ totalProjects: 4 }}>
+  const carousel = document.getElementById('carousel');
+  const dots = document.querySelectorAll('.carousel-dot');
+  let carIdx = 0;
+
+  function scrollTo(idx) {
+    carIdx = Math.max(0, Math.min(idx, totalProjects - 1));
+    carousel.children[carIdx]?.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'start' });
+    dots.forEach((d,i) => {
+      d.classList.toggle('w-8', i===carIdx);
+      d.classList.toggle('w-4', i!==carIdx);
+      d.classList.toggle('opacity-20', i!==carIdx);
+    });
+  }
+
+  document.getElementById('car-prev')?.addEventListener('click', () => scrollTo(carIdx-1));
+  document.getElementById('car-next')?.addEventListener('click', () => scrollTo(carIdx+1));
+  dots.forEach((d,i) => d.addEventListener('click', () => scrollTo(i)));
+</script>

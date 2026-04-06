@@ -1,0 +1,276 @@
+---
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/ui';
+
+interface Props { lang?: Lang }
+const { lang = 'es' } = Astro.props;
+const t = useTranslations(lang);
+
+// ── Variables desde .env ──────────────────────────
+const displayEmail  = import.meta.env.PUBLIC_DISPLAY_EMAIL  ?? 'carlos@email.com';
+const phone         = import.meta.env.PUBLIC_PHONE          ?? '+00 000 000 000';
+const location      = import.meta.env.PUBLIC_LOCATION       ?? 'Tu Ciudad, País';
+const availability  = import.meta.env.PUBLIC_AVAILABILITY   ?? 'Mon–Fri 09:00–18:00';
+const githubUrl     = import.meta.env.PUBLIC_GITHUB         ?? '#';
+const linkedinUrl   = import.meta.env.PUBLIC_LINKEDIN       ?? '#';
+const twitterUrl    = import.meta.env.PUBLIC_TWITTER        ?? '#';
+
+// ── Constantes estáticas ──────────────────────────
+const FOOTER_HEADING_1 = "Let's build";
+const SOCIAL_LINKS = [
+  { label: "GitHub",   href: githubUrl,   icon: "github"   },
+  { label: "LinkedIn", href: linkedinUrl, icon: "linkedin" },
+  { label: "Twitter",  href: twitterUrl,  icon: "twitter"  },
+];
+
+const navLinks       = t('footer.menuLinks')    as string[];
+const servicesList   = t('footer.services.list') as string[];
+const moreList       = t('footer.more.list')    as string[];
+---
+
+<footer class="bg-[#111] dark:bg-[#0a0a0a] text-[#f0f0eb] pt-16 pb-8 px-5">
+  <div class="max-w-6xl mx-auto">
+
+    <!-- ── Fila superior ── -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-14 mb-16">
+
+      <!-- Izquierda: heading + form -->
+      <div class="flex flex-col justify-between gap-10">
+        <div>
+          <p class="text-[11px] tracking-[0.25em] opacity-40 mb-5 uppercase">{t('footer.contact')}</p>
+          <h2 class="text-[clamp(2.4rem,5vw,4.2rem)] font-black leading-[0.9] tracking-tight">
+            {t('footer.heading1')}<br/>
+            {t('footer.heading2')}
+          </h2>
+        </div>
+
+        <!-- Formulario de contacto -->
+        <form id="contact-form" class="flex flex-col gap-5 max-w-md" novalidate>
+
+          <!-- Nombre -->
+          <div class="flex flex-col gap-1">
+            <label for="f-name" class="text-[10px] tracking-[0.18em] opacity-40 uppercase">{t('form.name')}</label>
+            <input
+              id="f-name"
+              type="text"
+              name="name"
+              placeholder={t('form.namePlaceholder') as string}
+              autocomplete="name"
+              class="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-[14px] placeholder:text-white/25 outline-none focus:border-white/40 focus:bg-white/8 transition-all"
+            />
+          </div>
+
+          <!-- Email -->
+          <div class="flex flex-col gap-1">
+            <label for="f-email" class="text-[10px] tracking-[0.18em] opacity-40 uppercase">Email <span class="text-accent">*</span></label>
+            <input
+              id="f-email"
+              type="email"
+              name="email"
+              placeholder={t('form.emailPlaceholder') as string}
+              required
+              autocomplete="email"
+              class="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-[14px] placeholder:text-white/25 outline-none focus:border-white/40 focus:bg-white/8 transition-all"
+            />
+          </div>
+
+          <!-- Mensaje -->
+          <div class="flex flex-col gap-1">
+            <label for="f-message" class="text-[10px] tracking-[0.18em] opacity-40 uppercase">{t('form.message')}</label>
+            <textarea
+              id="f-message"
+              name="message"
+              placeholder={t('form.messagePlaceholder') as string}
+              rows="3"
+              class="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-[14px] placeholder:text-white/25 outline-none focus:border-white/40 focus:bg-white/8 transition-all resize-none"
+            ></textarea>
+          </div>
+
+          <!-- Submit -->
+          <button
+            type="submit"
+            id="submit-btn"
+            class="group flex items-center justify-between gap-3 w-full bg-white text-[#111] rounded-lg px-5 py-[14px] text-[13px] font-bold tracking-wide hover:bg-accent hover:text-white transition-colors duration-200"
+          >
+            <span id="submit-label">{t('form.submit')}</span>
+            <svg class="group-hover:translate-x-1 transition-transform" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="2" y1="8" x2="14" y2="8"/>
+              <polyline points="8 2 14 8 8 14"/>
+            </svg>
+          </button>
+
+          <!-- Feedback -->
+          <p id="form-status" class="text-[12px] text-center hidden"></p>
+        </form>
+
+        <!-- Social -->
+        <div>
+          <p class="text-[11px] tracking-[0.2em] opacity-40 mb-3 uppercase">{t('footer.follow')}</p>
+          <div class="flex gap-3">
+            {SOCIAL_LINKS.map(s => (
+              <a
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.label}
+                class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:border-white/60 transition-colors"
+              >
+                {s.icon === 'github' && (
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                  </svg>
+                )}
+                {s.icon === 'linkedin' && (
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                )}
+                {s.icon === 'twitter' && (
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.932-9.077L2.25 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                )}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Derecha: info de contacto -->
+      <div class="grid grid-cols-2 gap-x-10 gap-y-8 content-start">
+        <div>
+          <p class="text-[10px] tracking-[0.2em] opacity-40 mb-2 uppercase">Location</p>
+          <p class="text-[14px] leading-relaxed opacity-80">{location}</p>
+        </div>
+        <div>
+          <p class="text-[10px] tracking-[0.2em] opacity-40 mb-2 uppercase">{t('footer.call')}</p>
+          <a href={`tel:${phone.replace(/\s/g,'')}`} class="text-[14px] opacity-80 hover:opacity-100 transition-opacity">
+            {phone}
+          </a>
+        </div>
+        <div>
+          <p class="text-[10px] tracking-[0.2em] opacity-40 mb-2 uppercase">{t('footer.email')}</p>
+          <a href={`mailto:${displayEmail}`} class="text-[14px] opacity-80 hover:opacity-100 transition-opacity">
+            {displayEmail}
+          </a>
+        </div>
+        <div>
+          <p class="text-[10px] tracking-[0.2em] opacity-40 mb-2 uppercase">{t('footer.availability')}</p>
+          <p class="text-[14px] opacity-80">{availability}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Separador ── -->
+    <div class="border-t border-white/10 mb-10"></div>
+
+    <!-- ── Links de navegación ── -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-14">
+      <div>
+        <p class="text-[10px] tracking-[0.2em] opacity-40 mb-4 uppercase">{t('footer.menu')}</p>
+        <ul class="flex flex-col gap-2">
+          {navLinks.map((label: string) => (
+            <li><span class="text-[13px] opacity-60">{label}</span></li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <p class="text-[10px] tracking-[0.2em] opacity-40 mb-4 uppercase">{t('footer.stack')}</p>
+        <ul class="flex flex-col gap-2">
+          {["React", "TypeScript", "Node.js", "Astro"].map(item => (
+            <li><span class="text-[13px] opacity-60">{item}</span></li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <p class="text-[10px] tracking-[0.2em] opacity-40 mb-4 uppercase">{t('footer.services')}</p>
+        <ul class="flex flex-col gap-2">
+          {servicesList.map((item: string) => (
+            <li><span class="text-[13px] opacity-60">{item}</span></li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <p class="text-[10px] tracking-[0.2em] opacity-40 mb-4 uppercase">{t('footer.more')}</p>
+        <ul class="flex flex-col gap-2">
+          {moreList.map((item: string) => (
+            <li><span class="text-[13px] opacity-60">{item}</span></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <!-- ── Barra inferior ── -->
+    <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+      <div class="flex gap-6">
+        <a href="#" class="text-[11px] opacity-30 hover:opacity-60 transition-opacity">{t('footer.terms')}</a>
+        <a href="#" class="text-[11px] opacity-30 hover:opacity-60 transition-opacity">{t('footer.privacy')}</a>
+      </div>
+      <p class="text-[11px] opacity-30">©{new Date().getFullYear()} Carlos Sanchez. {t('footer.rights')}</p>
+    </div>
+
+  </div>
+</footer>
+
+<script is:inline define:vars={{ msgSending: t('form.sending'), msgSuccess: t('form.success'), msgSuccessNote: t('form.successNote'), msgErrorEmail: t('form.errorEmail'), msgErrorSend: t('form.errorSend') }}>
+  const form        = document.getElementById('contact-form') as HTMLFormElement;
+  const submitBtn   = document.getElementById('submit-btn')   as HTMLButtonElement;
+  const submitLabel = document.getElementById('submit-label') as HTMLSpanElement;
+  const statusEl    = document.getElementById('form-status')  as HTMLParagraphElement;
+  const emailInput  = document.getElementById('f-email')      as HTMLInputElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Validación visual del email
+    if (!emailInput.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+      emailInput.classList.add('border-red-400');
+      emailInput.focus();
+      statusEl.textContent = msgErrorEmail;
+      statusEl.className   = 'text-[12px] text-center text-red-400';
+      statusEl.classList.remove('hidden');
+      return;
+    }
+    emailInput.classList.remove('border-red-400');
+
+    const data = Object.fromEntries(new FormData(form));
+
+    // Estado de carga
+    submitBtn.disabled      = true;
+    submitLabel.textContent = msgSending;
+    statusEl.classList.add('hidden');
+
+    try {
+      const res  = await fetch('/api/contact', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(data),
+      });
+      const json = await res.json();
+
+      if (res.ok) {
+        submitBtn.classList.remove('bg-white', 'text-[#111]', 'hover:bg-accent', 'hover:text-white');
+        submitBtn.classList.add('bg-green-500', 'text-white', 'cursor-default');
+        submitLabel.textContent = msgSuccess;
+        statusEl.textContent    = msgSuccessNote;
+        statusEl.className      = 'text-[12px] text-center text-green-400';
+        statusEl.classList.remove('hidden');
+        form.reset();
+      } else {
+        throw new Error(json.error ?? msgErrorSend);
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : msgErrorSend;
+      submitLabel.textContent = submitLabel.dataset.original || 'Send';
+      statusEl.textContent    = `✕ ${msg}`;
+      statusEl.className      = 'text-[12px] text-center text-red-400';
+      statusEl.classList.remove('hidden');
+      submitBtn.disabled      = false;
+    }
+  });
+
+  // Quitar error al escribir en email
+  emailInput?.addEventListener('input', () => {
+    emailInput.classList.remove('border-red-400');
+  });
+</script>

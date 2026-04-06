@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Offset para el navbar fijo (64px = h-16) */
+  :target,
+  [id] {
+    scroll-margin-top: 5rem;
+  }
+
+  /* Scrollbar minimalista */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #aaa; border-radius: 2px; }
+  .dark ::-webkit-scrollbar-thumb { background: #444; }
+}
