@@ -53,8 +53,9 @@ const altLangUrl = lang === 'es' ? '/en' : '/';
         <!-- Desktop nav — izquierda -->
         <div class="hidden md:flex items-center gap-7 text-[13px] tracking-wide">
           <a href={lang === 'es' ? '/' : '/en'} class="hover:opacity-50 transition-opacity">{t('nav.home')}</a>
-          <a href="#about"    class="hover:opacity-50 transition-opacity">{t('nav.about')}</a>
-          <a href="#projects" class="hover:opacity-50 transition-opacity">{t('nav.projects')}</a>
+          <a href={lang === 'es' ? '/#about'    : '/en#about'}    class="hover:opacity-50 transition-opacity">{t('nav.about')}</a>
+          <a href={lang === 'es' ? '/#projects' : '/en#projects'} class="hover:opacity-50 transition-opacity">{t('nav.projects')}</a>
+          <a href={lang === 'es' ? '/personal' : '/en/personal'} class="hover:text-accent transition-colors">{t('personal.nav')}</a>
         </div>
 
         <!-- Centro — brand -->
